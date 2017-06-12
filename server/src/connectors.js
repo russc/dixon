@@ -1,10 +1,16 @@
 import Sequelize from 'sequelize';
 
-// create the connection
+// // create the connection
 const sequelize = new Sequelize('dixon', "root", null, {
   host: 'localhost',
   dialect: 'mysql'
 });
+
+// create the connection
+// const sequelize = new Sequelize('heroku_9c23f8b82e19144', 'bd5ae23cfc4713', 'caefc012', {
+//   host: 'us-cdbr-iron-east-03.cleardb.net',
+//   dialect: 'mysql'
+// });
 
 //define the models
 const ClientModel = sequelize.define('client', {
@@ -43,8 +49,8 @@ const Service = sequelize.models.service;
 const Expense = sequelize.models.expense;
 const Calendar = sequelize.models.calendar;
 
-Client.hasMany(Calendar);
-Calendar.belongsTo(Client);
+Calendar.belongsTo(Client, {foreignKey: 'client_id'});
+Client.hasMany(Calendar, {foreignKey: 'client_id'});
 
 //create the table if it doesn't exist yet
 sequelize.sync({force: true}).then(() => {
